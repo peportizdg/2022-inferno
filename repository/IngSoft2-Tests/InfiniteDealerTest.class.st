@@ -1,11 +1,11 @@
 Class {
-	#name : #DealerTest,
+	#name : #InfiniteDealerTest,
 	#superclass : #TestCase,
 	#category : #'IngSoft2-Tests'
 }
 
 { #category : #asserting }
-DealerTest >> should: errorBlock raise: errorClass withMessage: expectedErrorMessage [
+InfiniteDealerTest >> should: errorBlock raise: errorClass withMessage: expectedErrorMessage [
 
 	| errorWasRaised errorMessage |
 	errorBlock
@@ -16,52 +16,52 @@ DealerTest >> should: errorBlock raise: errorClass withMessage: expectedErrorMes
 ]
 
 { #category : #asserting }
-DealerTest >> test01ADealerCanBeCreatedWithAtLeastOneTypeOfCard [
+InfiniteDealerTest >> test01ADealerCanBeCreatedWithAtLeastOneTypeOfCard [
 
 	| aCollectionOfTypes cardDealer |
 	aCollectionOfTypes := { SpeedCard new. }.
-	cardDealer := Dealer ofTypes: aCollectionOfTypes.
+	cardDealer := InfiniteDealer ofTypes: aCollectionOfTypes.
 	self assert: (cardDealer dealOne) assertThatIsACard .
 ]
 
 { #category : #asserting }
-DealerTest >> test02ADealerCannotBeCreatedWithAnEmptyArrayOfTypes [
+InfiniteDealerTest >> test02ADealerCannotBeCreatedWithAnEmptyArrayOfTypes [
 
 	| aCollectionOfTypes cardDealer error errorMessage |
 	aCollectionOfTypes := { SpeedCard new. }.
-	cardDealer := [Dealer ofTypes: aCollectionOfTypes].
+	cardDealer := [InfiniteDealer ofTypes: aCollectionOfTypes].
 	error := Error.
 	errorMessage := 'Cannot create a card dealer with no types of cards '.
 	self should: cardDealer raise: error withMessage: errorMessage.
 ]
 
 { #category : #asserting }
-DealerTest >> test03ADealerCannotBeCreatedWithAnArrayThatContainsAnythingButCards [
+InfiniteDealerTest >> test03ADealerCannotBeCreatedWithAnArrayThatContainsAnythingButCards [
 
 	| aCollectionOfTypes cardDealer error errorMessage |
 	aCollectionOfTypes := { SpeedCard new. Die new. }.
-	cardDealer := [Dealer ofTypes: aCollectionOfTypes].
+	cardDealer := [InfiniteDealer ofTypes: aCollectionOfTypes].
 	error := Error.
 	errorMessage := 'Array contains an object that is not a Card '.
 	self should: cardDealer raise: error withMessage: errorMessage.
 ]
 
 { #category : #asserting }
-DealerTest >> test04ADealerReturnsARandomCardIfIntializedWithSeveralTypes [
+InfiniteDealerTest >> test04ADealerReturnsARandomCardIfIntializedWithSeveralTypes [
 
 	| aCollectionOfTypes cardDealer |
 	aCollectionOfTypes := { SpeedCard new. OverloadCard  new. }.
-	cardDealer := [Dealer ofTypes: aCollectionOfTypes].
-	cardDealer := Dealer ofTypes: aCollectionOfTypes.
+	cardDealer := [InfiniteDealer ofTypes: aCollectionOfTypes].
+	cardDealer := InfiniteDealer ofTypes: aCollectionOfTypes.
 	self assert: (cardDealer dealOne) assertThatIsACard .
 ]
 
 { #category : #asserting }
-DealerTest >> test05ADealerReturnsTwoCardsIfAskedToDealInitialHand [
+InfiniteDealerTest >> test05ADealerReturnsTwoCardsIfAskedToDealInitialHand [
 
 	| aCollectionOfTypes cardDealer |
 	aCollectionOfTypes := { SpeedCard new. OverloadCard  new. }.
-	cardDealer := [Dealer ofTypes: aCollectionOfTypes].
-	cardDealer := Dealer ofTypes: aCollectionOfTypes.
+	cardDealer := [InfiniteDealer ofTypes: aCollectionOfTypes].
+	cardDealer := InfiniteDealer ofTypes: aCollectionOfTypes.
 	self assert: (cardDealer dealInitialCards ) cardsOnHand equals: 2.
 ]

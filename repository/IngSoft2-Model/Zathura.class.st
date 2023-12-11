@@ -47,8 +47,9 @@ Zathura class >> selfAssertEachPlayerHasTwoCardsAtTheBegining: aCollectionOfHand
 
 { #category : #assertions }
 Zathura >> assert: aCard isBeingAppliedTo: aSpaceship [
-
-	((cardsBeingApplied to: aSpaceship) includes: aCard) ifFalse: [ 
+	| cardsOnSpecificSpaceship |
+	cardsOnSpecificSpaceship := ((cardsBeingApplied to: aSpaceship)). 
+	(cardsOnSpecificSpaceship includes: aCard) ifFalse: [ 
 		Error signal:
 			'there is no card of that type being applied to that spaceship' ]
 ]
@@ -74,26 +75,42 @@ Zathura >> assertSpaceshipCanPlayCard: aSpaceship [
 		Error signal: 'Cannot play this card when it is not your turn' ]
 ]
 
+{ #category : #asserting }
+Zathura >> assertTheCard: aPermanentCard canBePlayedOnTarget: aSpaceship [ 
+	((aSpaceship = 'General') = (aPermanentCard = AccelerationCard new))ifFalse:[
+		Error signal: 'Cannot play that card on that target!.'].
+]
+
+{ #category : #cardApplying }
+Zathura >> boostCard: aCard from: aTargetedSpaceship playedBy: aSpaceship with: aSpeedBostCard [
+	self assert: aCard isBeingAppliedTo: aTargetedSpaceship.
+	self assertTheCard: aCard canBePlayedOnTarget: aTargetedSpaceship .
+	(cardsBeingApplied to: aTargetedSpaceship) remove: aCard.
+	aCard boost.
+	(cardsBeingApplied to: aTargetedSpaceship ) add: aCard .
+	lastCardPlayed := aSpeedBostCard.
+	board addToDiscardDeck: aSpeedBostCard .
+	
+]
+
 { #category : #cardApplying }
 Zathura >> cancelCard: aCard from: aSpaceship playedBy: anotherSpaceship with: aCancelCard [
 
-	| test1 test2 |
 	self assert: aCard isBeingAppliedTo: aSpaceship.
 	(spaceshipHands at: anotherSpaceship) play: aCancelCard.
-	test1 := cardsBeingApplied to: aSpaceship.
 	(cardsBeingApplied to: aSpaceship) remove: aCard.
-	test2 := cardsBeingApplied to: aSpaceship.
-	lastCardPlayed := aCancelCard
+	lastCardPlayed := aCancelCard.
+	board addToDiscardDeck: aCard.
+	board addToDiscardDeck: aCancelCard.
 ]
 
 { #category : #cardApplying }
 Zathura >> cardApplicator [
 
-	| cardsAffectingRoll cardsAffectingAllRolls addToRoll |
-	cardsAffectingRoll := cardsBeingApplied to:
-	                      turnController activeSpaceship.
-	cardsAffectingAllRolls := cardsBeingApplied to: 'General'.
-	cardsAffectingRoll addAllLast: cardsAffectingAllRolls.
+	| cardsAffectingRoll addToRoll |
+	cardsAffectingRoll := OrderedCollection new.
+	cardsAffectingRoll addAll: (cardsBeingApplied to:
+	                      turnController activeSpaceship) ; addAll: (cardsBeingApplied to: 'General') .
 	addToRoll := 0.
 	cardsAffectingRoll do: [ :card | 
 		addToRoll := addToRoll + card effectOnPlay ].
@@ -111,6 +128,7 @@ Zathura >> currentSpaceshipPlaysCard: aPermanentCard applyTo: aSpaceship playedB
 
 	| cardToApply |
 	self assertSpaceshipCanPlayCard: anotherSpaceship.
+	self assertTheCard: aPermanentCard canBePlayedOnTarget: aSpaceship .
 	cardToApply := (spaceshipHands at: anotherSpaceship) play:
 		               aPermanentCard.
 	(cardsBeingApplied to: aSpaceship) addLast: aPermanentCard.
@@ -247,6 +265,7 @@ Zathura >> redoLastCardPlayedBy: aSpaceship applyTo: anotherSpaceship with: aRed
 	(spaceshipHands at: anotherSpaceship) play: aRedoCard.
 	self assertSpaceshipCanPlayCard: aSpaceship.
 	(spaceshipHands at: anotherSpaceship) addPickedCardToHand: lastCardPlayed.
+	board addToDiscardDeck: aRedoCard.
 	self
 		currentSpaceshipPlaysCard: lastCardPlayed
 		applyTo: anotherSpaceship
@@ -277,10 +296,11 @@ Zathura >> redoRepeatCardPlayedBy: aSpaceship applyTo: anotherSpaceship with: aR
 Zathura >> repeatEffectCardPlayedBy: aSpaceship applyTo: anotherSpaceship with: aRepeatCard [
 
 	| cardPicked |
-	(spaceshipHands at: anotherSpaceship) play: aRepeatCard.
+	(spaceshipHands at: aSpaceship) play: aRepeatCard.
 	cardPicked := board applyLastEffectTo: anotherSpaceship.
-	(spaceshipHands at: anotherSpaceship) addPickedCardToHand: cardPicked.
-	lastCardPlayed := aRepeatCard
+	(spaceshipHands at: aSpaceship) addPickedCardToHand: cardPicked.
+	lastCardPlayed := aRepeatCard.
+	board addToDiscardDeck: aRepeatCard.
 ]
 
 { #category : #getters }
