@@ -19,6 +19,10 @@ RedoCard >> createOwnAction [
 	^ RedoAction new
 ]
 
+{ #category : #applying }
+RedoCard >> createOwnRedoAction [ 
+]
+
 { #category : #testing }
 RedoCard >> isSameTypeAs: aCard [
 

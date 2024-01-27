@@ -19,6 +19,11 @@ Card >> createOwnAction [
     self subclassResponsibility.
 ]
 
+{ #category : #applying }
+Card >> createOwnRedoAction [
+	^ self subclassResponsibility
+]
+
 { #category : #testing }
 Card >> isSameTypeAs: aCard [
 

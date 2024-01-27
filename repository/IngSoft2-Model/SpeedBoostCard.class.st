@@ -25,6 +25,11 @@ SpeedBoostCard >> createOwnAction [
 	^ SpeedBoostAction new
 ]
 
+{ #category : #applying }
+SpeedBoostCard >> createOwnRedoAction [
+	^ RedoSpeedBostAction new.
+]
+
 { #category : #testing }
 SpeedBoostCard >> isSameTypeAs: aCard [
 
