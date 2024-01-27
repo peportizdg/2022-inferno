@@ -3,7 +3,7 @@ i represent a type of card: overload
 "
 Class {
 	#name : #OverloadCard,
-	#superclass : #Object,
+	#superclass : #Card,
 	#instVars : [
 		'effect'
 	],

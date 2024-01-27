@@ -3,7 +3,7 @@ I represent a SpeedBost Card
 "
 Class {
 	#name : #SpeedBoostCard,
-	#superclass : #Object,
+	#superclass : #Card,
 	#category : #'IngSoft2-Model'
 }
 

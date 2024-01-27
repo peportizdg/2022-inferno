@@ -1,9 +1,9 @@
 "
-I represent an action made by a speed card
+I represent an action made by a speed card or overload card, cards that deploy spaceship movement.
 "
 Class {
 	#name : #MovementAction,
-	#superclass : #Object,
+	#superclass : #Action,
 	#category : #'IngSoft2-Model'
 }
 

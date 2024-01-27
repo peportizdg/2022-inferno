@@ -3,7 +3,7 @@ I represent an action or play made by an acceleration card.
 "
 Class {
 	#name : #AccelerationAction,
-	#superclass : #Object,
+	#superclass : #Action,
 	#category : #'IngSoft2-Model'
 }
 

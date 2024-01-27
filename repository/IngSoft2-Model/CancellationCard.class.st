@@ -4,7 +4,7 @@ i represent a type of card: cancellation
 "
 Class {
 	#name : #CancellationCard,
-	#superclass : #Object,
+	#superclass : #Card,
 	#category : #'IngSoft2-Model'
 }
 

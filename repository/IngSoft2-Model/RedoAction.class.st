@@ -3,7 +3,7 @@ I represent an action or play made on a game, by a redocard
 "
 Class {
 	#name : #RedoAction,
-	#superclass : #Object,
+	#superclass : #Action,
 	#category : #'IngSoft2-Model'
 }
 

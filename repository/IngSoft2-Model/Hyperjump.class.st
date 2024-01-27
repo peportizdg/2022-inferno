@@ -3,7 +3,7 @@ i represent a type of effect: hyperjump
 "
 Class {
 	#name : #Hyperjump,
-	#superclass : #Object,
+	#superclass : #Effect,
 	#instVars : [
 		'jumpsArray'
 	],

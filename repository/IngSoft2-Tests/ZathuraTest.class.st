@@ -1424,6 +1424,55 @@ ZathuraTest >> test36AssertASpaceshipUsingSpeedBostOnSpeedCardCanBeDuplicatedTwi
 ]
 
 { #category : #tests }
+ZathuraTest >> test37AssertASpaceshipCanRedoABoostCard [
+	| aBoard aCollectionOfSpaceships aCollectionOfSpots aDie1 aCollectionOfDice aDiceCup zathura firstSpot secondSpot thirdSpot fourthdSpot fifthdSpot aCardDealer cardToPlay1 cardToPlay2 cardToPlay3 cardToPlay4  |
+	aCardDealer := LoadedDealer ofTypes: {
+								RedoCard new.
+								SpeedBoostCard new.
+			               SpeedCard new.
+								OverloadCard new. }.
+	firstSpot := Spot createWith: NoEffect new.
+	secondSpot := Spot createWith: NoEffect new.
+	thirdSpot := Spot createWith: NoEffect new.
+	fourthdSpot := Spot createWith: NoEffect new.
+	fifthdSpot := Spot createWith: NoEffect new.
+	aCollectionOfSpots := {
+		                      firstSpot.
+		                      secondSpot.
+		                      thirdSpot.
+		                      fourthdSpot.
+		                      fifthdSpot }.
+	aCollectionOfSpaceships := { 'Razor Crest'. 'Millenium Falcon' }.
+	aBoard := Board
+		          with: aCollectionOfSpots
+		          and: 10
+		          playedFor: 3
+		          by: aCollectionOfSpaceships
+		          dealtBy: aCardDealer.
+	aDie1 := LoadedDie with: 5.
+	aCollectionOfDice := { aDie1 }.
+	aDiceCup := DiceCup with: aCollectionOfDice.
+	zathura := Zathura playWith: aDiceCup over: aBoard.
+	cardToPlay1 := OverloadCard new.
+	"Millenium le aplica overload a razor crest"
+	zathura play: cardToPlay1 by: 'Millenium Falcon' affecting: 'Razor Crest'.
+	cardToPlay2 := SpeedCard new.
+	"en el mismo turno milenium se aplica a si mismo un speed"
+	zathura play: cardToPlay2 by: 'Millenium Falcon' affecting: 'Millenium Falcon'.
+	zathura playNextTurn.
+	"ahora, en su turno, razor crest hace boost de el speed del milenium"
+	cardToPlay3 := SpeedBoostCard  new.
+	zathura play: cardToPlay3 by: 'Razor Crest' affecting: {'Millenium Falcon'. cardToPlay2 }.
+	cardToPlay4 := RedoCard new.
+	"en ese mismo turno hace un redo de la ultima carta para boostear el overload
+	aplicado sobre si mismo"
+	zathura play: cardToPlay4 by: 'Razor Crest' affecting:  { 'Razor Crest'. cardToPlay1. }.
+	"ahora deberia disminuir en 4 la tirada de razor crest , pasando al 2"
+	zathura playNextTurn .
+	self assert: (zathura positionOf: 'Razor Crest') spotNumber equals: 2.
+]
+
+{ #category : #tests }
 ZathuraTest >> test39AssertASpaceshipCannotPlayAnAccelerationCardOnSpecificShip [
 
 	| aBoard aCollectionOfSpaceships aCollectionOfSpots aDie1 aCollectionOfDice aDiceCup zathura firstSpot secondSpot thirdSpot fourthdSpot fifthdSpot cardToPlay aCardDealer errorBlock errorMessage error |

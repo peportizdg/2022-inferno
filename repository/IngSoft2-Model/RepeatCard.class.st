@@ -3,7 +3,7 @@ i represent a type of card: repeat
 "
 Class {
 	#name : #RepeatCard,
-	#superclass : #Object,
+	#superclass : #Card,
 	#category : #'IngSoft2-Model'
 }
 

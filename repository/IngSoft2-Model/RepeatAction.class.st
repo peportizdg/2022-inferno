@@ -3,7 +3,7 @@ I represent a repeat action made by a repeat card.
 "
 Class {
 	#name : #RepeatAction,
-	#superclass : #Object,
+	#superclass : #Action,
 	#category : #'IngSoft2-Model'
 }
 

@@ -3,7 +3,7 @@ I represent a redo action made by a redo card when the last card played was a sp
 "
 Class {
 	#name : #RedoMovementAction,
-	#superclass : #Object,
+	#superclass : #Action,
 	#category : #'IngSoft2-Model'
 }
 

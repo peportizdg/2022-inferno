@@ -3,7 +3,7 @@ I represent the action made by a speedBoost card.
 "
 Class {
 	#name : #SpeedBoostAction,
-	#superclass : #Object,
+	#superclass : #Action,
 	#category : #'IngSoft2-Model'
 }
 

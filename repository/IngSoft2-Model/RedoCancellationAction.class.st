@@ -3,7 +3,7 @@ I represent an action or play made by an aredo card when the last card played wa
 "
 Class {
 	#name : #RedoCancellationAction,
-	#superclass : #Object,
+	#superclass : #Action,
 	#category : #'IngSoft2-Model'
 }
 

@@ -296,6 +296,19 @@ Zathura >> redoRepeatCardPlayedBy: applyingSpaceshipName applyTo: targetSpaceshi
 ]
 
 { #category : #cardApplying }
+Zathura >> redoSpeedBostCard: aCardToBeBoosted from: aTargetedSpaceshipName playedBy: applyingSpaceshipName with: aRedoCard [ 
+	| targetSpaceship applyingSpaceship |
+	targetSpaceship := self
+		                   assert: aCardToBeBoosted
+		                   isBeingAppliedTo: aTargetedSpaceshipName.
+	targetSpaceship cancel: aCardToBeBoosted.
+	aCardToBeBoosted boost.
+	targetSpaceship getsApplied: aCardToBeBoosted.
+	applyingSpaceship := board getSpaceshipByName: applyingSpaceshipName.
+	board addToDiscardDeck: aCardToBeBoosted.
+]
+
+{ #category : #cardApplying }
 Zathura >> repeatEffectCardPlayedBy: aSpaceshipName applyTo: targetSpaceshipName with: aRepeatCard [
 
 	| applyingSpaceship |

@@ -3,7 +3,7 @@ i represent a type of card: acceleration
 "
 Class {
 	#name : #AccelerationCard,
-	#superclass : #Object,
+	#superclass : #Card,
 	#instVars : [
 		'effect'
 	],

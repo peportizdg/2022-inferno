@@ -3,7 +3,7 @@ I represent an action or play made by an cancellation card.
 "
 Class {
 	#name : #CancellationAction,
-	#superclass : #Object,
+	#superclass : #Action,
 	#category : #'IngSoft2-Model'
 }
 

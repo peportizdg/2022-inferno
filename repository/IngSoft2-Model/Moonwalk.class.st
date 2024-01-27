@@ -3,7 +3,7 @@ i represent a type of effect: moonwalk
 "
 Class {
 	#name : #Moonwalk,
-	#superclass : #Object,
+	#superclass : #Effect,
 	#instVars : [
 		'number'
 	],
