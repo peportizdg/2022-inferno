@@ -9,5 +9,6 @@ Class {
 
 { #category : #applying }
 AtomicBomb >> applyTo: aBoard by: aSpaceship [
-	aBoard moveAllSpaceshipsToStartOfLap.
+
+	aBoard moveAllSpaceshipsToStartOfLap
 ]

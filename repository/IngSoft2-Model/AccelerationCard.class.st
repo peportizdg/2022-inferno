@@ -10,42 +10,28 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #asserting }
-AccelerationCard class >> assertThatIsACard [
-	^ true
-]
-
-{ #category : #comparing }
-AccelerationCard >> = aCard [
-
-	^ self class = aCard class
-]
-
 { #category : #assertions }
 AccelerationCard >> assertThatIsACard [
 
-	^ self checkIfItIsAValidCard
+	^ true
 ]
 
 { #category : #boosting }
 AccelerationCard >> boost [
-	effect := effect *2.
-]
 
-{ #category : #assertions }
-AccelerationCard >> checkIfItIsAValidCard [
-
-	^ true
+	effect := effect * 2
 ]
 
 { #category : #creating }
 AccelerationCard >> createOwnAction [
-	^ AccelerationAction new.
+
+	^ AccelerationAction new
 ]
 
 { #category : #redoer }
 AccelerationCard >> createOwnRedoAction [
-	^ RedoAccelerationaction new.
+
+	^ RedoAccelerationaction new
 ]
 
 { #category : #assertions }
@@ -54,7 +40,14 @@ AccelerationCard >> effectOnPlay [
 	^ effect.
 ]
 
-{ #category : #assertions }
-AccelerationCard >> initialize [ 
-	effect:= 1.
+{ #category : #initialization }
+AccelerationCard >> initialize [
+
+	effect := 1
+]
+
+{ #category : #testing }
+AccelerationCard >> isSameTypeAs: aCard [
+
+	^ self class = aCard class
 ]

@@ -9,26 +9,24 @@ Class {
 
 { #category : #asserting }
 SpeedBoostCard class >> assertThatIsACard [
+
 	^ true
 ]
 
 { #category : #comparing }
-SpeedBoostCard >> = aCard [
+SpeedBoostCard >> assertThatIsACard [
 
-	^ self class = aCard class
-]
-
-{ #category : #comparing }
-SpeedBoostCard >> assertThatIsACard [ 
-	^ self checkIfItIsAValidCard 
-]
-
-{ #category : #comparing }
-SpeedBoostCard >> checkIfItIsAValidCard [ 
-	^ true 
+	^ true
 ]
 
 { #category : #creating }
 SpeedBoostCard >> createOwnAction [
-	^ SpeedBoostAction new.
+
+	^ SpeedBoostAction new
+]
+
+{ #category : #testing }
+SpeedBoostCard >> isSameTypeAs: aCard [
+
+	^ self class = aCard class
 ]

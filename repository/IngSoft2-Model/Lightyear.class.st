@@ -13,8 +13,9 @@ Class {
 { #category : #asserting }
 Lightyear class >> assertValid: aDistance [
 
-	aDistance >=0 ifFalse: [ 
-		Error signal: 'LightYears value has to be greater or equal than zero' ].
+	aDistance >= 0 ifFalse: [
+		Error signal:
+			'LightYears value has to be greater or equal than zero' ]
 ]
 
 { #category : #'instance creation' }
@@ -56,5 +57,6 @@ Lightyear >> initializeWith: aDistance [
 
 { #category : #validation }
 Lightyear >> isValid [
-	^ distance >=0
+
+	^ distance >= 0
 ]

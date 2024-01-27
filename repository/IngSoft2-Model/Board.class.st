@@ -12,7 +12,8 @@ Class {
 		'spaceshipsPositions',
 		'lastEffectAplied',
 		'cardDealer',
-		'cardPicked'
+		'playingSpaceships',
+		'fleet'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -20,7 +21,7 @@ Class {
 { #category : #assertion }
 Board class >> assertValidAmountOfLaps: anAmountOfLaps [
 
-	anAmountOfLaps > 0 ifFalse: [ 
+	anAmountOfLaps > 0 ifFalse: [
 		Error signal:
 			'Board cannot be created with a number of laps lower than 0.' ]
 ]
@@ -28,7 +29,7 @@ Board class >> assertValidAmountOfLaps: anAmountOfLaps [
 { #category : #assertion }
 Board class >> assertValidAmountOfSpaceship: aCollectionOfSpaceships [
 
-	aCollectionOfSpaceships size > 1 ifFalse: [ 
+	aCollectionOfSpaceships size > 1 ifFalse: [
 		Error signal:
 			'Board cannot be created with a number of spaceships lower than 2' ]
 ]
@@ -50,7 +51,7 @@ Board class >> assertValidLengthInParsecs: anAmountOfParsecs [
 ]
 
 { #category : #'class initialization' }
-Board class >> with: aCollectionOfSpots and: aLengthInParsecs playedFor: anAmountOfLaps by: aCollectionOfSpaceships DealtBy: aCardDealer [
+Board class >> with: aCollectionOfSpots and: aLengthInParsecs playedFor: anAmountOfLaps by: aCollectionOfSpaceships dealtBy: aCardDealer [
 
 	self assertValidAmountOfSpots: aCollectionOfSpots.
 	self assertValidLengthInParsecs: aLengthInParsecs.
@@ -61,15 +62,15 @@ Board class >> with: aCollectionOfSpots and: aLengthInParsecs playedFor: anAmoun
 		  and: aLengthInParsecs
 		  around: anAmountOfLaps
 		  playedBy: aCollectionOfSpaceships
-		  DealtBy: aCardDealer
+		  dealtBy: aCardDealer
 ]
 
 { #category : #getters }
 Board >> addEachPositionToRanking: spaceshipArrayOfKeys [
 
 	| orderedRanking |
-	orderedRanking := Dictionary new: spaceshipArrayOfKeys size.
-	spaceshipArrayOfKeys do: [ :eachSpaceship | 
+	orderedRanking := OrderedCollection new: spaceshipArrayOfKeys size.
+	spaceshipArrayOfKeys do: [ :eachSpaceship |
 		orderedRanking
 			at: eachSpaceship
 			put: (spaceshipsPositions at: eachSpaceship) ].
@@ -77,8 +78,21 @@ Board >> addEachPositionToRanking: spaceshipArrayOfKeys [
 ]
 
 { #category : #adding }
+Board >> addPickedCardTo: aSpaceshipName [
+
+	| spaceship |
+	spaceship := spaceshipsPositions keys
+		             detect: [ :eachSpaceship |
+		             eachSpaceship name = aSpaceshipName ]
+		             ifNone: [
+		             Error signal: 'That Spaceship does not exist.' ].
+	spaceship addPickedCardToHand: cardDealer dealOne
+]
+
+{ #category : #adding }
 Board >> addToDiscardDeck: aCard [
-	cardDealer addToDiscardDeck: aCard.
+
+	cardDealer addToDiscardDeck: aCard
 ]
 
 { #category : #getters }
@@ -88,49 +102,67 @@ Board >> amountOfLaps [
 ]
 
 { #category : #effectApplying }
-Board >> applyEffect: aSpaceship [
+Board >> applyEffect: aSpaceshipName [
 
-	self applyEffectTriggeredBy: aSpaceship
+	self applyEffectTriggeredBy: aSpaceshipName
 ]
 
 { #category : #effectApplying }
-Board >> applyEffectTriggeredBy: aSpaceship [
+Board >> applyEffectTriggeredBy: aSpaceshipName [
 
 	| spotNumber |
-	spotNumber := (self positionOf: aSpaceship) spotNumber.
+	spotNumber := (self positionOf: aSpaceshipName) spotNumber.
 	lastEffectAplied := (layout at: spotNumber) effectAtSpot.
-	lastEffectAplied applyTo: self by: aSpaceship.
+	lastEffectAplied applyTo: self by: aSpaceshipName.
 ]
 
 { #category : #effectApplying }
-Board >> applyLastEffectTo: aSpaceship [
+Board >> applyLastEffectTo: aSpaceshipName [
 
 	| resultOfEffectApplying |
 	resultOfEffectApplying := lastEffectAplied
 		                          applyTo: self
-		                          by: aSpaceship. 
+		                          by: aSpaceshipName. 
 ]
 
-{ #category : #cardDealing }
-Board >> dealOneCard [
-	^ self dealer dealOne.
+{ #category : #asserting }
+Board >> assertThat: aCard isBeingAppliedTo: aSpaceshipName [
+
+	| spaceship |
+	spaceship := self getSpaceshipByName: aSpaceshipName.
+	(spaceship cardsBeingApplied anySatisfy: [ :eachCard |
+		 eachCard isSameTypeAs: aCard ]) ifFalse: [
+		Error signal:
+			'No card of the same type as  is being applied to spaceship ' ].
+	^ spaceship
+]
+
+{ #category : #asserting }
+Board >> assertThatIsNotInitialized [
+
+	spaceshipsPositions keysAndValuesDo: [ :spaceship :position |
+		(position lapNumber = 0 and: [ position spotNumber = 1 ]) ifFalse: [
+			Error signal:
+				'Spaceship "' , spaceship name
+				, '" is not in the starter position.' ] ]
 ]
 
 { #category : #getters }
 Board >> dealer [
-	^ cardDealer.
+
+	^ cardDealer
 ]
 
 { #category : #effectApplying }
-Board >> executeAMoonwalkTo: aSpaceship of: aMoonwalkNumber [
+Board >> executeAMoonwalkTo: aSpaceshipName of: aMoonwalkNumber [
 
 	| spaceships positionBeforeMoonwalk |
 	spaceships := self spaceshipPositions keys.
-	spaceships do: [ :eachSpaceship | 
-		eachSpaceship == aSpaceship ifFalse: [ 
-			positionBeforeMoonwalk := self positionOf: eachSpaceship.
+	spaceships do: [ :eachSpaceship |
+		eachSpaceship name == aSpaceshipName ifFalse: [
+			positionBeforeMoonwalk := self positionOf: eachSpaceship name.
 			self
-				move: eachSpaceship
+				move: eachSpaceship name
 				back: aMoonwalkNumber * -1
 				from: positionBeforeMoonwalk ] ]
 ]
@@ -171,6 +203,20 @@ Board >> executeAnHyperJumpTo: aSpaceship of: parsecsForThisJump [
 ]
 
 { #category : #getters }
+Board >> getAllCardsAffecting: aSpaceship [
+
+	| cardsBeingAppliedToSpaceship |
+	cardsBeingAppliedToSpaceship := OrderedCollection new.
+	cardsBeingAppliedToSpaceship addAll: fleet cardsBeingApplied.
+	(spaceshipsPositions keys includes: aSpaceship)
+		ifTrue: [
+		cardsBeingAppliedToSpaceship addAll: aSpaceship cardsBeingApplied ]
+		ifFalse: [
+		Error signal: 'That spaceship does not exist in current board.' ].
+	^ cardsBeingAppliedToSpaceship
+]
+
+{ #category : #getters }
 Board >> getAmountOfSpotsToMoveGivenParsecs: anAmountOfParsecs [
 
 	| amountOfSpots parsecsPerSpot amountOfParsecsToMove amountOfSpotsToMove |
@@ -182,22 +228,63 @@ Board >> getAmountOfSpotsToMoveGivenParsecs: anAmountOfParsecs [
 	^ amountOfSpotsToMove
 ]
 
+{ #category : #getters }
+Board >> getFleet [
+
+	^ fleet
+]
+
+{ #category : #getters }
+Board >> getHandOf: aSpaceshipName [
+
+	| spaceship |
+	spaceship := spaceshipsPositions keys
+		             detect: [ :eachSpaceship |
+		             eachSpaceship name = aSpaceshipName ]
+		             ifNone: [
+		             Error signal:
+			             'There is no spaceship with that name in this board.' ].
+	^ spaceship hand
+]
+
+{ #category : #getters }
+Board >> getSpaceshipByName: aSpaceshipName [
+
+	| spaceship |
+	spaceship := spaceshipsPositions keys
+		             detect: [ :eachSpaceship |
+		             eachSpaceship name = aSpaceshipName ]
+		             ifNone: [
+		             Error signal: 'That spaceship does not exist.' ].
+
+	^ spaceship
+]
+
 { #category : #initialization }
-Board >> initializeWith: aCollectionOfSpots and: aLengthInParsecs around: anAmountOfLaps playedBy: aCollectionOfSpaceships DealtBy: aCardDealer [
+Board >> initializeSpaceships: spaceshipNames [
+
+	^ spaceshipNames collect: [ :eachName |
+		  cardDealer dealInitialCardsTo: eachName ]
+]
+
+{ #category : #initialization }
+Board >> initializeWith: aCollectionOfSpots and: aLengthInParsecs around: anAmountOfLaps playedBy: aCollectionOfSpaceshipsNames dealtBy: aCardDealer [
 
 	| amountOfSpaceships |
 	layout := aCollectionOfSpots.
 	lengthInParsecs := aLengthInParsecs.
 	laps := anAmountOfLaps.
 	length := aCollectionOfSpots size.
-	amountOfSpaceships := aCollectionOfSpaceships size.
+	amountOfSpaceships := aCollectionOfSpaceshipsNames size.
 	lastEffectAplied := NoEffect new.
-	cardPicked := false.
 	spaceshipsPositions := Dictionary new: amountOfSpaceships.
 	cardDealer := aCardDealer.
-	1 to: amountOfSpaceships do: [ :spaceship | 
+	playingSpaceships := self initializeSpaceships:
+		                     aCollectionOfSpaceshipsNames.
+	fleet := Fleet create.
+	1 to: amountOfSpaceships do: [ :spaceship |
 		spaceshipsPositions
-			at: (aCollectionOfSpaceships at: spaceship)
+			at: (playingSpaceships at: spaceship)
 			put: (Position at: 0 on: 1) ]
 ]
 
@@ -239,16 +326,16 @@ Board >> move: aSpaceship back: rollNumber from: positionBeforeRoll [
 	nextLapCandidate := nextPositionInTotalSpots // lengthInSpots.
 	nextPositionInTotalSpots < 1
 		ifTrue: [ self move: aSpaceship to: 0 and: 1 ]
-		ifFalse: [ 
+		ifFalse: [
 			nextSpotCandidate == 0
-				ifTrue: [ 
+				ifTrue: [
 				self move: aSpaceship to: nextLapCandidate - 1 and: lengthInSpots ]
-				ifFalse: [ 
+				ifFalse: [
 				self move: aSpaceship to: nextLapCandidate and: nextSpotCandidate ] ]
 ]
 
-{ #category : #playing }
-Board >> move: aSpaceship from: positionBeforeRoll to: rollNumber [
+{ #category : #moving }
+Board >> move: aSpaceshipName from: positionBeforeRoll to: rollNumber [
 
 	| spotAfterLapping spotBeforeRoll lapBeforeRoll |
 	spotBeforeRoll := positionBeforeRoll spotNumber.
@@ -256,58 +343,67 @@ Board >> move: aSpaceship from: positionBeforeRoll to: rollNumber [
 	(self isLapFinishedIf: spotBeforeRoll moves: rollNumber)
 		ifTrue: [
 			lapBeforeRoll + 1 >= laps
-				ifTrue: [ self moveToFinishLine: aSpaceship ]
+				ifTrue: [ self moveToFinishLine: aSpaceshipName ]
 				ifFalse: [
 					spotAfterLapping := spotBeforeRoll + rollNumber - length.
-					self move: aSpaceship to: lapBeforeRoll + 1 and: spotAfterLapping.
-					self applyEffect: aSpaceship ] ]
+					self
+						move: aSpaceshipName
+						to: lapBeforeRoll + 1
+						and: spotAfterLapping.
+					self applyEffect: aSpaceshipName ] ]
 		ifFalse: [
 			(self isLapDecreasedIf: spotBeforeRoll moves: rollNumber)
 				ifFalse: [
 					self
-						move: aSpaceship
+						move: aSpaceshipName
 						to: lapBeforeRoll
 						and: spotBeforeRoll + rollNumber ]
 				ifTrue: [
-				self move: aSpaceship back: rollNumber from: positionBeforeRoll ].
-			self applyEffect: aSpaceship ].
-	cardPicked ifFalse: [ ^ self ].
-	self setCardPickedFlag: false.
-	^ self dealOneCard
+				self
+					move: aSpaceshipName
+					back: rollNumber
+					from: positionBeforeRoll ].
+			self applyEffect: aSpaceshipName ]
 ]
 
 { #category : #moving }
-Board >> move: aSpaceship to: aLapNumber and: aSpotNumber [
+Board >> move: aSpaceshipName to: aLapNumber and: aSpotNumber [
 
+	| spaceship |
+	spaceship := spaceshipsPositions keys
+		             detect: [ :each | each name = aSpaceshipName ]
+		             ifNone: [
+		             Error signal:
+			             'Spaceship not found for the given name: ' ].
 	spaceshipsPositions
-		at: aSpaceship
+		at: spaceship
 		put: (Position at: aLapNumber on: aSpotNumber)
 ]
 
 { #category : #moving }
-Board >> move: aSpaceship withoutTriggeringNewEffectsfrom: positionBeforeRoll to: rollNumber [
+Board >> move: aSpaceshipName withoutTriggeringNewEffectsfrom: positionBeforeRoll to: rollNumber [
 
 	| spotAfterLapping lapBeforeRoll spotBeforeRoll |
 	lapBeforeRoll := positionBeforeRoll lapNumber.
 	spotBeforeRoll := positionBeforeRoll spotNumber.
 	rollNumber == 0
-		ifTrue: [ 
-		self move: aSpaceship to: lapBeforeRoll and: spotBeforeRoll ]
-		ifFalse: [ 
+		ifTrue: [
+		self move: aSpaceshipName to: lapBeforeRoll and: spotBeforeRoll ]
+		ifFalse: [
 			(self isLapFinishedIf: spotBeforeRoll moves: rollNumber)
-				ifTrue: [ 
+				ifTrue: [
 					lapBeforeRoll + 1 >= laps
-						ifTrue: [ self moveToFinishLine: aSpaceship ]
-						ifFalse: [ 
+						ifTrue: [ self moveToFinishLine: aSpaceshipName ]
+						ifFalse: [
 							spotAfterLapping := spotBeforeRoll + rollNumber - length.
 							spotAfterLapping == 0 ifTrue: [ spotAfterLapping := length ].
 							self
-								move: aSpaceship
+								move: aSpaceshipName
 								to: lapBeforeRoll + 1
 								and: spotAfterLapping ] ]
-				ifFalse: [ 
+				ifFalse: [
 					self
-						move: aSpaceship
+						move: aSpaceshipName
 						to: lapBeforeRoll
 						and: spotBeforeRoll + rollNumber ] ]
 ]
@@ -317,9 +413,10 @@ Board >> moveAllSpaceshipsToStartOfLap [
 
 	| spaceships lapBeforeAtomicBomb |
 	spaceships := self spaceshipPositions keys.
-	spaceships do: [ :eachSpaceship | 
-		lapBeforeAtomicBomb := (self positionOf: eachSpaceship) lapNumber.
-		self move: eachSpaceship to: lapBeforeAtomicBomb and: 1 ]
+	spaceships do: [ :eachSpaceship |
+		lapBeforeAtomicBomb := (self positionOf: eachSpaceship name)
+			                       lapNumber.
+		self move: eachSpaceship name to: lapBeforeAtomicBomb and: 1 ]
 ]
 
 { #category : #moving }
@@ -329,9 +426,15 @@ Board >> moveToFinishLine: aSpaceship [
 ]
 
 { #category : #getters }
-Board >> positionOf: aSpaceship [
+Board >> positionOf: aSpaceshipName [
 
-	^ spaceshipsPositions at: aSpaceship
+	| spaceship |
+	spaceship := spaceshipsPositions keys
+		             detect: [ :each | each name = aSpaceshipName ]
+		             ifNone: [
+		             Error signal:
+			             'Spaceship not found for the given name: ' ].
+	^ spaceshipsPositions at: spaceship
 ]
 
 { #category : #getters }
@@ -340,21 +443,16 @@ Board >> rankingOfSpaceships [
 	| spaceshipsArray |
 	spaceshipsArray := self spaceshipPositions keys.
 	self sortSpaceshipsByPosition: spaceshipsArray.
-	^ self addEachPositionToRanking: spaceshipsArray
-]
-
-{ #category : #setter }
-Board >> setCardPickedFlag: aBoolean [ 
-	cardPicked := aBoolean.
+	^ spaceshipsArray
 ]
 
 { #category : #getters }
 Board >> sortSpaceshipsByPosition: spaceshipsArray [
 
 	| positionOfFirstSpaceship positionOfSecondSpaceship |
-	spaceshipsArray sort: [ :firstSpaceship :secondSpaceship | 
-		positionOfFirstSpaceship := self positionOf: firstSpaceship.
-		positionOfSecondSpaceship := self positionOf: secondSpaceship.
+	spaceshipsArray sort: [ :firstSpaceship :secondSpaceship |
+		positionOfFirstSpaceship := self positionOf: firstSpaceship name.
+		positionOfSecondSpaceship := self positionOf: secondSpaceship name.
 		positionOfFirstSpaceship > positionOfSecondSpaceship ]
 ]
 

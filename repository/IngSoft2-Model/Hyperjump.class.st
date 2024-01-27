@@ -11,15 +11,19 @@ Class {
 }
 
 { #category : #assertions }
-Hyperjump class >> assertValid: aJumpsArray [ 
-	aJumpsArray do: [ :distance | (distance distance) >= 0 ifFalse: [ 
-			Error signal: 'Values of the collection cannot be a negative number' ] ].
+Hyperjump class >> assertValid: aJumpsArray [
+
+	aJumpsArray do: [ :distance |
+		distance distance >= 0 ifFalse: [
+			Error signal:
+				'Values of the collection cannot be a negative number' ] ]
 ]
 
 { #category : #'class initialization' }
-Hyperjump class >> createWith: aJumpsArray [ 
+Hyperjump class >> createWith: aJumpsArray [
+
 	self assertValid: aJumpsArray.
-	^self new initializeWith: aJumpsArray.
+	^ self new initializeWith: aJumpsArray
 ]
 
 { #category : #getters }
@@ -34,7 +38,8 @@ Hyperjump >> applyHyperJumpIn: aBoard to: aSpaceship [
 
 { #category : #applying }
 Hyperjump >> applyTo: aBoard by: aSpaceship [
-	 self applyHyperJumpIn: aBoard to: aSpaceship.
+
+	self applyHyperJumpIn: aBoard to: aSpaceship
 ]
 
 { #category : #initialization }

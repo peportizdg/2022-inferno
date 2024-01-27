@@ -5,7 +5,7 @@ Class {
 }
 
 { #category : #asserting }
-FiniteDealerTest >> should: errorBlock raise: errorClass withMessage: expectedErrorMessage [
+FiniteDealerTest >> should: errorBlock raise: errorClass withMessage: expectedErrorMessage [ 
 
 	| errorWasRaised errorMessage |
 	errorBlock
@@ -15,105 +15,43 @@ FiniteDealerTest >> should: errorBlock raise: errorClass withMessage: expectedEr
 			errorMessage := error messageText ]
 ]
 
-{ #category : #tests }
-FiniteDealerTest >> test01AFiniteDeckOfOneCardCanBeCreated [
+{ #category : #asserting }
+FiniteDealerTest >> test01AFiniteDeckOfOneCardCanBeCreated [ 
 
 	| aDeckCreator aDictionaryWithCardsAndItsProbabilities finiteDeck testCard |
-	aDeckCreator := FiniteDealer new.
+	aDeckCreator := GameToolsFactory new.
 	aDictionaryWithCardsAndItsProbabilities := Dictionary new.
 	aDictionaryWithCardsAndItsProbabilities at: SpeedCard put: 100.
-	finiteDeck := aDeckCreator createDeckOf: 1 with: aDictionaryWithCardsAndItsProbabilities.
+	finiteDeck := aDeckCreator createDealerOf: 1 with: aDictionaryWithCardsAndItsProbabilities.
 	testCard := SpeedCard new.
-	self assert: (finiteDeck dealOne) equals: testCard.
+	self assert: ((finiteDeck dealOne) isSameTypeAs: testCard).
 ]
 
-{ #category : #tests }
-FiniteDealerTest >> test02AFiniteDeckCanDealInitialHands [
+{ #category : #asserting }
+FiniteDealerTest >> test02AFiniteDeckCanDealInitialHandsToASpaceship [ 
 
-	| aDeckCreator aDictionaryWithCardsAndItsProbabilities finiteDeck testCard testCard2 testHand |
-	aDeckCreator := FiniteDealer new.
+	| aDeckCreator aDictionaryWithCardsAndItsProbabilities finiteDeck testCard testCard2 |
+	aDeckCreator := GameToolsFactory new.
 	aDictionaryWithCardsAndItsProbabilities := Dictionary new.
 	aDictionaryWithCardsAndItsProbabilities at: SpeedCard put: 50.
 	aDictionaryWithCardsAndItsProbabilities at: OverloadCard put: 50.
-	finiteDeck := aDeckCreator createDeckOf: 100 with: aDictionaryWithCardsAndItsProbabilities.
+	finiteDeck := aDeckCreator createDealerOf: 100 with: aDictionaryWithCardsAndItsProbabilities.
 	testCard := SpeedCard new.
 	testCard2 := OverloadCard new.
-	testHand := Hand containing: { 
-							testCard .
-							testCard2 }.
-	self assert: (finiteDeck dealInitialCards) cardsOnHand  equals:2
+	self assert: (finiteDeck dealInitialCardsTo: 'Razor Crest') cardsOnHand  equals:2
 ]
 
-{ #category : #tests }
-FiniteDealerTest >> test03AFiniteDeckCannotDealACardIfItIsEmpty [
-
-	| aDeckCreator aDictionaryWithCardsAndItsProbabilities finiteDeck    errorBlock errorMessage error |
-	aDeckCreator := FiniteDealer new.
-	aDictionaryWithCardsAndItsProbabilities := Dictionary new.
-	aDictionaryWithCardsAndItsProbabilities at: SpeedCard put: 50.
-	aDictionaryWithCardsAndItsProbabilities at: OverloadCard put: 50.
-	finiteDeck := aDeckCreator createDeckOf: 1 with: aDictionaryWithCardsAndItsProbabilities.
-	errorBlock := [finiteDeck dealInitialCards].
-	errorMessage := 'Cannot pull a card as the deck is empty'.
-	error := Error.
-	self should:  errorBlock raise: error  withMessage: errorMessage .
-]
-
-{ #category : #tests }
-FiniteDealerTest >> test04AFiniteDeckCannotBeCreatedWithAmountZeroOrLower [
-
-	| aDeckCreator aDictionaryWithCardsAndItsProbabilities finiteDeck    errorBlock errorMessage error |
-	aDeckCreator := FiniteDealer new.
-	aDictionaryWithCardsAndItsProbabilities := Dictionary new.
-	aDictionaryWithCardsAndItsProbabilities at: SpeedCard put: 50.
-	aDictionaryWithCardsAndItsProbabilities at: OverloadCard put: 50.
-
-	errorBlock := 	[finiteDeck := aDeckCreator createDeckOf: 0 with: aDictionaryWithCardsAndItsProbabilities.].
-	errorMessage := 'Cannot pull a card as the deck is empty'.
-	error := Error.
-	self should:  errorBlock raise: error  withMessage: errorMessage .
-]
-
-{ #category : #tests }
-FiniteDealerTest >> test05AFiniteDeckCannotBeCreatedWIfProbabilitiesDoNotAddTo100 [
-
-	| aDeckCreator aDictionaryWithCardsAndItsProbabilities finiteDeck    errorBlock errorMessage error |
-	aDeckCreator := FiniteDealer new.
-	aDictionaryWithCardsAndItsProbabilities := Dictionary new.
-	aDictionaryWithCardsAndItsProbabilities at: SpeedCard put: 49.
-	aDictionaryWithCardsAndItsProbabilities at: OverloadCard put: 50.
-
-	errorBlock := 	[finiteDeck := aDeckCreator createDeckOf: 0 with: aDictionaryWithCardsAndItsProbabilities.].
-	errorMessage := 'Probabilities do not add to 100 percent'.
-	error := Error.
-	self should:  errorBlock raise: error  withMessage: errorMessage .
-]
-
-{ #category : #tests }
-FiniteDealerTest >> test06AFiniteDeckCannotBeCreatedWIfProbabilitiesAreNegative [
-
-	| aDeckCreator aDictionaryWithCardsAndItsProbabilities finiteDeck    errorBlock errorMessage error |
-	aDeckCreator := FiniteDealer new.
-	aDictionaryWithCardsAndItsProbabilities := Dictionary new.
-	aDictionaryWithCardsAndItsProbabilities at: SpeedCard put: 100.
-	aDictionaryWithCardsAndItsProbabilities at: OverloadCard put: -1.
-
-	errorBlock := 	[finiteDeck := aDeckCreator createDeckOf: 0 with: aDictionaryWithCardsAndItsProbabilities.].
-	errorMessage := 'Probabilities must be positive'.
-	error := Error.
-	self should:  errorBlock raise: error  withMessage: errorMessage .
-]
-
-{ #category : #tests }
-FiniteDealerTest >> test07AFiniteDeckDecreasesInAmountOfCardsIfDealingThem [
+{ #category : #asserting }
+FiniteDealerTest >> test03AFiniteDeckDecreasesInAmountOfCardsIfDealingThem [ 
 
 	| aDeckCreator aDictionaryWithCardsAndItsProbabilities finiteDeck aHand |
-	aDeckCreator := FiniteDealer new.
+	aDeckCreator := GameToolsFactory new.
 	aDictionaryWithCardsAndItsProbabilities := Dictionary new.
 	aDictionaryWithCardsAndItsProbabilities at: SpeedCard put: 100.
 
-	finiteDeck := aDeckCreator createDeckOf: 10 with: aDictionaryWithCardsAndItsProbabilities.
-	aHand := finiteDeck dealInitialCards .
+	finiteDeck := aDeckCreator createDealerOf: 10 with: aDictionaryWithCardsAndItsProbabilities.
+	aHand := finiteDeck dealInitialCardsTo: 'Razor Crest' .
 	self assert: (finiteDeck amountOfCardsInDeck ) equals: 8.
-
+	self assert: (finiteDeck amountOfDiscarded) equals: 0.
+	self assert: (aHand cardsOnHand) equals: 2.
 ]

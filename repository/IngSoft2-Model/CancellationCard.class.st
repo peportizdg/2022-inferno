@@ -8,35 +8,26 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #asserting }
-CancellationCard class >> assertThatIsACard [
-	^ true
-]
-
-{ #category : #comparing }
-CancellationCard >> = aCard [
-
-	^ self class = aCard class
-]
-
 { #category : #assertions }
 CancellationCard >> assertThatIsACard [
-
-	^ self checkIfItIsAValidCard
-]
-
-{ #category : #assertions }
-CancellationCard >> checkIfItIsAValidCard [
 
 	^ true
 ]
 
 { #category : #creating }
 CancellationCard >> createOwnAction [
-	^ CancellationAction new.
+
+	^ CancellationAction new
 ]
 
 { #category : #redoer }
 CancellationCard >> createOwnRedoAction [
-	^ RedoCancellationAction new.
+
+	^ RedoCancellationAction new
+]
+
+{ #category : #testing }
+CancellationCard >> isSameTypeAs: aCard [
+
+	^ self class = aCard class
 ]

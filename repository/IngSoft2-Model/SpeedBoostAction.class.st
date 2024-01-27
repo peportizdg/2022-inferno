@@ -8,10 +8,11 @@ Class {
 }
 
 { #category : #applying }
-SpeedBoostAction >> on: aGameInstance by: aSpaceship to: affected with: aSpeedBostCard [ 
-	aGameInstance 
-		boostCard: (affected at: 2)
-		from: (affected at: 1)
-		playedBy: aSpaceship 
-		with: aSpeedBostCard 
+SpeedBoostAction >> on: aZathuraGame by: anApplyingSpaceship to: aTarget with: aSpeedBostCard [
+
+	aZathuraGame
+		boostCard: (aTarget at: 2)
+		from: (aTarget at: 1)
+		playedBy: anApplyingSpaceship
+		with: aSpeedBostCard
 ]

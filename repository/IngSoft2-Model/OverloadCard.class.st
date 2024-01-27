@@ -10,42 +10,28 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #asserting }
-OverloadCard class >> assertThatIsACard [
-	^ true
-]
-
-{ #category : #comparing }
-OverloadCard >> = aCard [
-
-	^ self class = aCard class
-]
-
 { #category : #assertions }
 OverloadCard >> assertThatIsACard [
 
-	^ self checkIfItIsAValidCard
+	^ true
 ]
 
 { #category : #boosting }
 OverloadCard >> boost [
-	effect:= effect * 2.
-]
 
-{ #category : #assertions }
-OverloadCard >> checkIfItIsAValidCard [
-
-	^ true
+	effect := effect * 2
 ]
 
 { #category : #creating }
 OverloadCard >> createOwnAction [
-	^ SpeedOrOverloadAction new.
+
+	^ MovementAction new
 ]
 
 { #category : #redoer }
 OverloadCard >> createOwnRedoAction [
-	^ RedoSpeedOrOverloadAction new.
+
+	^ RedoMovementAction new
 ]
 
 { #category : #effect }
@@ -54,7 +40,14 @@ OverloadCard >> effectOnPlay [
 	^ effect.
 ]
 
-{ #category : #effect }
+{ #category : #initialization }
 OverloadCard >> initialize [
-	effect := -2.
+
+	effect := -2
+]
+
+{ #category : #testing }
+OverloadCard >> isSameTypeAs: aCard [
+
+	^ self class = aCard class
 ]

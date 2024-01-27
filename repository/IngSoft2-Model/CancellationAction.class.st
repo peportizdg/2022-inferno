@@ -8,11 +8,11 @@ Class {
 }
 
 { #category : #applying }
-CancellationAction >> on: aGameInstance by: aSpaceship to: affected with: aCancellationCard [
+CancellationAction >> on: aZathuraGame by: applyingSpaceship to: aTarget with: aCancellationCard [
 
-	aGameInstance
-		cancelCard: (affected at: 2)
-		from: (affected at: 1)
-		playedBy: aSpaceship
+	aZathuraGame
+		cancelCard: (aTarget at: 2)
+		from: (aTarget at: 1)
+		playedBy: applyingSpaceship
 		with: aCancellationCard
 ]

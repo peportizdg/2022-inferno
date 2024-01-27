@@ -9,7 +9,7 @@ Class {
 }
 
 { #category : #applying }
-CardPicker >> applyTo: aBoard by: aSpaceship [
+CardPicker >> applyTo: aBoard by: aSpaceshipName [
 
-	aBoard setCardPickedFlag: true
+	aBoard addPickedCardTo: aSpaceshipName
 ]

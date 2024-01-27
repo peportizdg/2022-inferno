@@ -7,35 +7,26 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #asserting }
-RepeatCard class >> assertThatIsACard [ 
-	^ true.
-]
-
-{ #category : #comparing }
-RepeatCard >> = aCard [
-
-	^ self class = aCard class
-]
-
 { #category : #assertion }
 RepeatCard >> assertThatIsACard [
-
-	^ self checkIfItIsAValidCard
-]
-
-{ #category : #assertions }
-RepeatCard >> checkIfItIsAValidCard [
 
 	^ true
 ]
 
 { #category : #creating }
 RepeatCard >> createOwnAction [
-	^ RepeatAction new.
+
+	^ RepeatAction new
 ]
 
 { #category : #redoer }
 RepeatCard >> createOwnRedoAction [
-	^ RedoRepeatAction new.
+
+	^ RedoRepeatAction new
+]
+
+{ #category : #testing }
+RepeatCard >> isSameTypeAs: aCard [
+
+	^ self class = aCard class
 ]
