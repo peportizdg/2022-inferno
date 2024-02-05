@@ -57,11 +57,11 @@ InfiniteDealerTest >> test04ADealerReturnsARandomCardIfIntializedWithSeveralType
 ]
 
 { #category : #asserting }
-InfiniteDealerTest >> test05ADealerReturnsTwoCardsIfAskedToDealInitialHand [
+InfiniteDealerTest >> test05ADealerReturnsSpaceshipWithInitialHandSetted [
 
 	| aCollectionOfTypes cardDealer |
 	aCollectionOfTypes := { SpeedCard new. OverloadCard  new. }.
 	cardDealer := [InfiniteDealer ofTypes: aCollectionOfTypes].
 	cardDealer := InfiniteDealer ofTypes: aCollectionOfTypes.
-	self assert: (cardDealer dealInitialCards ) cardsOnHand equals: 2.
+	self assert: (cardDealer dealInitialCardsTo: 'Razor Crest' ) cardsOnHand equals: 2.
 ]

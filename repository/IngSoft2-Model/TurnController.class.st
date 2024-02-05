@@ -25,9 +25,11 @@ TurnController >> activeSpaceship [
 ]
 
 { #category : #initialization }
-TurnController >> initializeWith: aMapOfSpaceshipsPositions [
+TurnController >> initializeWith: spaceshipPositionsDictionary [
 
-	spaceshipsOrderedByTurn := aMapOfSpaceshipsPositions keys.
+	spaceshipsOrderedByTurn := spaceshipPositionsDictionary keys
+		                           asSortedCollection: [ :a :b |
+		                           a name asUppercase < b name asUppercase ].
 	activeSpaceshipID := 1.
 	activeSpaceship := spaceshipsOrderedByTurn at: 1
 ]
@@ -36,10 +38,10 @@ TurnController >> initializeWith: aMapOfSpaceshipsPositions [
 TurnController >> nextSpaceshipInLine [
 
 	activeSpaceshipID + 1 > spaceshipsOrderedByTurn size
-		ifTrue: [ 
+		ifTrue: [
 			activeSpaceshipID := 1.
 			activeSpaceship := spaceshipsOrderedByTurn at: 1 ]
-		ifFalse: [ 
+		ifFalse: [
 			activeSpaceship := spaceshipsOrderedByTurn at:
 				                   activeSpaceshipID + 1.
 			activeSpaceshipID := activeSpaceshipID + 1 ]

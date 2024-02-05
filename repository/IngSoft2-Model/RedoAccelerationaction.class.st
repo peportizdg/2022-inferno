@@ -2,13 +2,13 @@
 I represent an action or play made by an redo card, when the last card played was an acceleration card
 "
 Class {
-	#name : #RedoAccelerationaction,
-	#superclass : #Object,
+	#name : #RedoAccelerationAction,
+	#superclass : #Action,
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #applying }
-RedoAccelerationaction >> on: aGameInstance by: aSpaceship to: affected with: aRedoCard [
+RedoAccelerationAction >> on: aZathuraGame by: applyingSpaceship to: aTarget with: aRedoCard [
 
-	aGameInstance redoLastCardPlayedBy: aSpaceship with: aRedoCard
+	aZathuraGame redoLastCardPlayedBy: applyingSpaceship with: aRedoCard
 ]

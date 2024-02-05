@@ -4,12 +4,12 @@ i reprsent a type of effect: cardpicker
 "
 Class {
 	#name : #CardPicker,
-	#superclass : #Object,
+	#superclass : #Effect,
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #applying }
-CardPicker >> applyTo: aBoard by: aSpaceship [
+CardPicker >> applyTo: aBoard by: aSpaceshipName [
 
-	aBoard setCardPickedFlag: true
+	aBoard addPickedCardTo: aSpaceshipName
 ]

@@ -25,7 +25,7 @@ EffectsTest >> test01NoEffectDoesNothingToAnySpaceship [
 		          and: 10
 		          playedFor: 3
 		          by: aCollectionOfSpaceships
-		          DealtBy: aCardDealer.
+		          dealtBy: aCardDealer.
 	aBoard move: 'Razor Crest' to: 1 and: 1.
 	expectedPosition := Position at: 1 on: 1.
 	aBoard applyEffectTriggeredBy: 'Razor Crest'.
@@ -58,7 +58,7 @@ EffectsTest >> test02SpeedUpMovesSpaceship4SpotsForward [
 		          and: 10
 		          playedFor: 3
 		          by: aCollectionOfSpaceships
-		          DealtBy: aCardDealer.
+		          dealtBy: aCardDealer.
 	aBoard move: 'Razor Crest' to: 1 and: 1.
 	expectedPosition := Position at: 2 on: 2.
 	aBoard applyEffectTriggeredBy: 'Razor Crest'.
@@ -91,7 +91,7 @@ EffectsTest >> test03WormholeMovesSpaceship4SpotsBackwards [
 		          and: 10
 		          playedFor: 2
 		          by: aCollectionOfSpaceships
-		          DealtBy: aCardDealer.
+		          dealtBy: aCardDealer.
 	aBoard move: 'Razor Crest' to: 1 and: 3.
 	expectedPosition := Position at: 0 on: 2.
 	aBoard applyEffectTriggeredBy: 'Razor Crest'.
@@ -124,7 +124,7 @@ EffectsTest >> test04AtomicBombPutsEverySpaceshipInSpotZeroAndCurrentLap [
 		          and: 10
 		          playedFor: 3
 		          by: aCollectionOfSpaceships
-		          DealtBy: aCardDealer.
+		          dealtBy: aCardDealer.
 	aBoard move: 'Razor Crest' to: 0 and: 3.
 	aBoard move: 'Millenium Falcon' to: 1 and: 3.
 	aBoard move: 'SC30 StarFighter' to: 2 and: 3.
@@ -171,7 +171,7 @@ EffectsTest >> test05MoonwalkMovesEveryOtherSpaceshipNSpotsBackwards [
 		          and: 10
 		          playedFor: 3
 		          by: aCollectionOfSpaceships
-		          DealtBy: aCardDealer.
+		          dealtBy: aCardDealer.
 	aBoard move: 'Razor Crest' to: 0 and: 3.
 	aBoard move: 'Millenium Falcon' to: 2 and: 2.
 	aBoard move: 'SC30 StarFighter' to: 3 and: 3.
@@ -200,9 +200,9 @@ EffectsTest >> test05MoonwalkMovesEveryOtherSpaceshipNSpotsBackwards [
 ]
 
 { #category : #tests }
-EffectsTest >> test06CardPickerSpotReturnsATypeOfCard [
+EffectsTest >> test06CardPickerSpotAddsACardToSpaceship [
 
-| aBoard aCollectionOfSpaceships aCollectionOfSpots firstSpot secondSpot thirdSpot fourthdSpot fifthdSpot  aCardDealer startingPosition cardPicked |
+| aBoard aCollectionOfSpaceships aCollectionOfSpots firstSpot secondSpot thirdSpot fourthdSpot fifthdSpot  aCardDealer startingPosition |
 	firstSpot := Spot createWith: NoEffect new.
 	secondSpot := Spot createWith: CardPicker new.
 	thirdSpot := Spot createWith: NoEffect new.
@@ -223,11 +223,10 @@ EffectsTest >> test06CardPickerSpotReturnsATypeOfCard [
 		          and: 10
 		          playedFor: 3
 		          by: aCollectionOfSpaceships
-		          DealtBy: aCardDealer.
+		          dealtBy: aCardDealer.
 	startingPosition := Position at: 0 on: 1.
-
-	cardPicked := aBoard move:'Razor crest' from: startingPosition to: 1. "hago que pise el cardpicker" 
-	self assert: cardPicked assertThatIsACard .
+	aBoard move:'Razor Crest' from: startingPosition to: 1. "hago que pise el cardpicker" 
+	self assert: (aBoard getHandOf: 'Razor Crest') size equals: 3.
 ]
 
 { #category : #tests }
@@ -259,7 +258,7 @@ EffectsTest >> test07HyperJumpSpotIsTriggeredBySpaceshipAndMovesIt3Parsecs [
 		          and: 9
 		          playedFor: 3
 		          by: aCollectionOfSpaceships
-		          DealtBy: aCardDealer.
+		          dealtBy: aCardDealer.
 	aBoard move: 'Razor Crest' to: 0 and: 3.
 	expectedPositionAfterFirstJump := Position at: 1 on: 1.
 	aBoard applyEffectTriggeredBy: 'Razor Crest'.
@@ -300,7 +299,7 @@ EffectsTest >> test08HyperJumpSpotIsCreatedWithParsecsAndLightyearsAndIsTriggere
 		          and: 9
 		          playedFor: 3
 		          by: aCollectionOfSpaceships
-		          DealtBy: aCardDealer.
+		          dealtBy: aCardDealer.
 	aBoard move: 'Razor Crest' to: 0 and: 3.
 	expectedPositionAfterFirstJump := Position at: 1 on: 1.
 	aBoard applyEffectTriggeredBy: 'Razor Crest'.
@@ -343,7 +342,7 @@ EffectsTest >> test09HyperJumpSpotIsTriggeredBySpaceshipAndMovesIt9Lightyears [
 		          and: 9
 		          playedFor: 3
 		          by: aCollectionOfSpaceships
-		          DealtBy: aCardDealer.
+		          dealtBy: aCardDealer.
 	aBoard move: 'Razor Crest' to: 0 and: 3.
 	expectedPositionAfterFirstJump := Position at: 1 on: 1.
 	aBoard applyEffectTriggeredBy: 'Razor Crest'.
@@ -381,7 +380,7 @@ EffectsTest >> test10HyperJumpMovesTriggeringSpaceshipTwiceOneExpresedInLightyea
 		          and: 9
 		          playedFor: 3
 		          by: aCollectionOfSpaceships
-		          DealtBy: aCardDealer.
+		          dealtBy: aCardDealer.
 	aBoard move: 'Razor Crest' to: 0 and: 3.
 	expectedPositionAfterFirstJump := Position at: 1 on: 1.
 	aBoard applyEffectTriggeredBy: 'Razor Crest'.
@@ -431,7 +430,7 @@ EffectsTest >> test11IfJumpsDistanceIsSmallerThanParsecsPerSpotSpaceshipIsNotMov
 		          and: 9
 		          playedFor: 5
 		          by: aCollectionOfSpaceships
-		          DealtBy: aCardDealer.
+		          dealtBy: aCardDealer.
 	aBoard move: 'Razor Crest' to: 0 and: 3.
 	expectedPositionAfterFirstJump := Position at: 1 on: 1.
 	aBoard applyEffectTriggeredBy: 'Razor Crest'.
@@ -476,7 +475,7 @@ EffectsTest >> test12AfterUsedAllHyperJumpsStartsFromFirstOneAgain [
 		          and: 9
 		          playedFor: 5
 		          by: aCollectionOfSpaceships
-		          DealtBy: aCardDealer.
+		          dealtBy: aCardDealer.
 	aBoard move: 'Razor Crest' to: 0 and: 3.
 	expectedPositionAfterFirstJump := Position at: 1 on: 1.
 	aBoard applyEffectTriggeredBy: 'Razor Crest'.
@@ -525,7 +524,7 @@ EffectsTest >> test13IfJumpsDistanceHasDecimalPartItOnlyJumpsTheIntegerPart [
 		          and: 10
 		          playedFor: 5
 		          by: aCollectionOfSpaceships
-		          DealtBy: aCardDealer.
+		          dealtBy: aCardDealer.
 	aBoard move: 'Razor Crest' to: 0 and: 3.
 	expectedPositionAfterFirstJump := Position at: 1 on: 1.
 	aBoard applyEffectTriggeredBy: 'Razor Crest'.

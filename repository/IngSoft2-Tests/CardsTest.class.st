@@ -13,12 +13,12 @@ CardsTest >> test01SpeedCardCanRespondToAssertionMessage [
 ]
 
 { #category : #tests }
-CardsTest >> test02SpeedCardEqualsAnotherInstanceOfSameCard [
+CardsTest >> test02SpeedCardCanAssertThatAnotherInstanceOfSameCardIsOfSameType [
 
 	| aTestCard aCard |
 	aTestCard := SpeedCard new.
 	aCard := SpeedCard new.
-	self assert: aTestCard equals: aCard
+	self assert: (aTestCard isSameTypeAs: aCard)
 ]
 
 { #category : #tests }
@@ -38,12 +38,12 @@ CardsTest >> test04OverloadCardCanRespondToAssertionMessage [
 ]
 
 { #category : #tests }
-CardsTest >> test05OverloadCardEqualsAnotherInstanceOfSameCard [
+CardsTest >> test05OverloadCardCanAssertThatAnotherInstanceOfSameCardIsOfSameType [
 
 	| aTestCard aCard |
 	aTestCard := OverloadCard new.
 	aCard := OverloadCard new.
-	self assert: aTestCard equals: aCard
+	self assert: (aTestCard isSameTypeAs: aCard)
 ]
 
 { #category : #tests }
@@ -63,12 +63,12 @@ CardsTest >> test07CancellationCardCanRespondToAssertionMessage [
 ]
 
 { #category : #tests }
-CardsTest >> test08CancellationCardEqualsAnotherInstanceOfSameCard [
+CardsTest >> test08CancellationCardCanAssertThatAnotherInstanceOfSameCardIsOfSameType [
 
 	| aTestCard aCard |
 	aTestCard := CancellationCard new.
 	aCard := CancellationCard new.
-	self assert: aTestCard equals: aCard
+	self assert: (aTestCard isSameTypeAs: aCard)
 ]
 
 { #category : #tests }
@@ -80,12 +80,12 @@ CardsTest >> test09AccelerationCardCanRespondToAssertionMessage [
 ]
 
 { #category : #tests }
-CardsTest >> test10AccelerationCardEqualsAnotherInstanceOfSameCard [
+CardsTest >> test10AnAccelerationCardCanAssertThatAnotherCardIsOfSameType [
 
 	| aTestCard aCard |
 	aTestCard := AccelerationCard new.
 	aCard := AccelerationCard new.
-	self assert: aTestCard equals: aCard
+	self assert: (aTestCard isSameTypeAs: aCard)
 ]
 
 { #category : #tests }
@@ -105,21 +105,21 @@ CardsTest >> test12RepeatCardCanRespondToAssertionMessage [
 ]
 
 { #category : #tests }
-CardsTest >> test13RepeatCardEqualsAnotherInstanceOfSameCard [
+CardsTest >> test13RepeatCardCanAssertThatAnotherCardIsOfSameType [
 
 	| aTestCard aCard |
 	aTestCard := RepeatCard new.
 	aCard := RepeatCard new.
-	self assert: aTestCard equals: aCard
+	self assert: (aTestCard isSameTypeAs: aCard)
 ]
 
 { #category : #tests }
-CardsTest >> test14RedoCardEqualsAnotherInstanceOfSameCard [
+CardsTest >> test14RedoCardCanAssertAnotherCardIsOfSameType [
 
 	| aTestCard aCard |
 	aTestCard := RedoCard new.
 	aCard := RedoCard new.
-	self assert: aTestCard equals: aCard
+	self assert: (aTestCard isSameTypeAs: aCard).
 ]
 
 { #category : #tests }
@@ -131,12 +131,12 @@ CardsTest >> test15RedoCardCanRespondToAssertionMessage [
 ]
 
 { #category : #tests }
-CardsTest >> test16SpeedBostCardEqualsAnotherInstanceOfSameCard [
+CardsTest >> test16SpeedBostCardCanAssertIfAnotherCardIsOfSameType [
 
 	| aTestCard aCard |
 	aTestCard := SpeedBoostCard new.
 	aCard := SpeedBoostCard new.
-	self assert: aTestCard equals: aCard.
+	self assert: (aTestCard isSameTypeAs: aCard).
 ]
 
 { #category : #tests }

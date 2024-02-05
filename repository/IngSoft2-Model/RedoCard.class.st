@@ -3,34 +3,28 @@ I represent a type of card: redo
 "
 Class {
 	#name : #RedoCard,
-	#superclass : #Object,
+	#superclass : #Card,
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #asserting }
-RedoCard class >> assertThatIsACard [
-	^ true
-]
-
-{ #category : #comparing }
-RedoCard >> = aCard [
-
-	^ self class = aCard class
-]
-
 { #category : #assertions }
 RedoCard >> assertThatIsACard [
-
-	^ self checkIfItIsAValidCard
-]
-
-{ #category : #assertions }
-RedoCard >> checkIfItIsAValidCard [
 
 	^ true
 ]
 
 { #category : #creating }
 RedoCard >> createOwnAction [
-	^ RedoAction new.
+
+	^ RedoAction new
+]
+
+{ #category : #applying }
+RedoCard >> createOwnRedoAction [ 
+]
+
+{ #category : #testing }
+RedoCard >> isSameTypeAs: aCard [
+
+	^ self class = aCard class
 ]

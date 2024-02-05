@@ -3,58 +3,51 @@ i represent a type of card, speed
 "
 Class {
 	#name : #SpeedCard,
-	#superclass : #Object,
+	#superclass : #Card,
 	#instVars : [
 		'effect'
 	],
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #asserting }
-SpeedCard class >> assertThatIsACard [ 
-	^ true
-]
-
-{ #category : #assertions }
-SpeedCard >> = aCard [
-
-	^ self class = aCard class
-]
-
 { #category : #assertions }
 SpeedCard >> assertThatIsACard [
 
-	^ self checkIfItIsAValidCard
+	^ true
 ]
 
 { #category : #boosting }
 SpeedCard >> boost [
-	effect := effect * 2.
-]
 
-{ #category : #assertions }
-SpeedCard >> checkIfItIsAValidCard [
-
-	^ true
+	effect := effect * 2
 ]
 
 { #category : #creating }
 SpeedCard >> createOwnAction [
-	^ SpeedOrOverloadAction new.
+
+	^ MovementAction new
 ]
 
 { #category : #redoer }
 SpeedCard >> createOwnRedoAction [
-	^ RedoSpeedOrOverloadAction new.
+
+	^ RedoMovementAction new
 ]
 
 { #category : #playing }
 SpeedCard >> effectOnPlay [
 
-	^ effect.
+	^ effect
 ]
 
-{ #category : #playing }
-SpeedCard >> initialize [ 
-	effect := 1.
+{ #category : #initialization }
+SpeedCard >> initialize [
+
+	effect := 1
+]
+
+{ #category : #testing }
+SpeedCard >> isSameTypeAs: aCard [
+
+	^ self class = aCard class
 ]

@@ -31,7 +31,7 @@ BoardTest >> test01ABoardHasAtLeastOneSpot [
 		          and: 10
 		          playedFor: 3
 		          by: aCollectionOfSpaceships
-		          DealtBy: aCardDealer.
+		          dealtBy: aCardDealer.
 	self assert: aBoard lengthInSpots equals: 1
 ]
 
@@ -54,7 +54,7 @@ BoardTest >> test02ABoardCanMoveASpaceshipToDesiredPosition [
 		          and: 10
 		          playedFor: 3
 		          by: aCollectionOfSpaceships
-		          DealtBy: aCardDealer.
+		          dealtBy: aCardDealer.
 	aBoard move: 'SC30 StarFighter' to: 2 and: 2.
 	self
 		assert: (aBoard positionOf: 'SC30 StarFighter') lapNumber
@@ -85,7 +85,7 @@ BoardTest >> test03ABoardCannotMoveASpaceshipToInvalidLap [
 		          and: 10
 		          playedFor: 3
 		          by: aCollectionOfSpaceships
-		          DealtBy: aCardDealer.
+		          dealtBy: aCardDealer.
 	invalidMove := [ aBoard move: 'SC30 StarFighter' to: 2 and: 3 ].
 	self should: invalidMove raise: error withMessage: errorMessage
 ]
@@ -111,7 +111,7 @@ BoardTest >> test04ABoardCannotMoveASpaceshipToInvalidPosition [
 		          and: 10
 		          playedFor: 3
 		          by: aCollectionOfSpaceships
-		          DealtBy: aCardDealer.
+		          dealtBy: aCardDealer.
 	invalidMove := [ aBoard move: 'SC30 StarFighter' to: 1 and: -1 ].
 	self should: invalidMove raise: error withMessage: errorMessage
 ]
@@ -135,7 +135,7 @@ BoardTest >> test05ABoardCanReturnItsLenghtInSpots [
 		          and: 10
 		          playedFor: 3
 		          by: aCollectionOfSpaceships
-		          DealtBy: aCardDealer.
+		          dealtBy: aCardDealer.
 	aBoard move: 'SC30 StarFighter' to: 2 and: 2.
 	self assert: aBoard lengthInSpots equals: 2
 ]
@@ -159,7 +159,7 @@ BoardTest >> test06ABoardCanReturnItsLenghtInParsecs [
 		          and: 10
 		          playedFor: 3
 		          by: aCollectionOfSpaceships
-		          DealtBy: aCardDealer.
+		          dealtBy: aCardDealer.
 	aBoard move: 'SC30 StarFighter' to: 2 and: 2.
 	self assert: aBoard lengthInParsecs equals: 10
 ]
@@ -183,7 +183,7 @@ BoardTest >> test07ABoardCanReturnItsAmountOfLapsToBePlayed [
 		          and: 10
 		          playedFor: 3
 		          by: aCollectionOfSpaceships
-		          DealtBy: aCardDealer.
+		          dealtBy: aCardDealer.
 	aBoard move: 'SC30 StarFighter' to: 2 and: 2.
 	self assert: aBoard amountOfLaps equals: 3
 ]
@@ -207,9 +207,45 @@ BoardTest >> test08ABoardCanReturnThePositionOfAllTheSpaceships [
 		          and: 10
 		          playedFor: 3
 		          by: aCollectionOfSpaceships
-		          DealtBy: aCardDealer.
+		          dealtBy: aCardDealer.
 	aBoard move: 'SC30 StarFighter' to: 2 and: 2.
 	self
-		assert: (aBoard spaceshipPositions at: 'SC30 StarFighter') lapNumber
+		assert: (aBoard positionOf:'SC30 StarFighter') lapNumber
 		equals: 2
+]
+
+{ #category : #tests }
+BoardTest >> test09ABoardIsInitializedWithPositionsOfSpaceshipAtStart [
+
+	| aBoard aCollectionOfSpaceships aCollectionOfSpots firstSpot secondSpot aCardDealer |
+	aCardDealer := InfiniteDealer ofTypes: { 
+			               SpeedCard new.
+			               OverloadCard new }.
+	firstSpot := Spot createWith: NoEffect new.
+	secondSpot := Spot createWith: NoEffect new.
+	aCollectionOfSpots := { 
+		                      firstSpot.
+		                      secondSpot }.
+	aCollectionOfSpaceships := { 'Razor Crest'. 'Millenium Falcon'.
+	                           'SC30 StarFighter' }.
+	aBoard := Board
+		          with: aCollectionOfSpots
+		          and: 10
+		          playedFor: 3
+		          by: aCollectionOfSpaceships
+		          dealtBy: aCardDealer.
+	self
+		assert: (aBoard positionOf:'SC30 StarFighter') lapNumber equals: 0.
+	self
+		assert: (aBoard positionOf: 'SC30 StarFighter') spotNumber equals: 1.
+	self
+		assert: (aBoard positionOf:'Millenium Falcon') lapNumber equals: 0.
+	self
+		assert: (aBoard positionOf: 'Millenium Falcon') spotNumber equals: 1.
+	self
+		assert: (aBoard positionOf:'Razor Crest') lapNumber equals: 0.
+	self
+		assert: (aBoard positionOf: 'Razor Crest') spotNumber equals: 1.
+	
+		
 ]

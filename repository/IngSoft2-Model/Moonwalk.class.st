@@ -3,7 +3,7 @@ i represent a type of effect: moonwalk
 "
 Class {
 	#name : #Moonwalk,
-	#superclass : #Object,
+	#superclass : #Effect,
 	#instVars : [
 		'number'
 	],
@@ -13,7 +13,7 @@ Class {
 { #category : #initialization }
 Moonwalk class >> assertValid: aMoonwalkNumber [
 
-	aMoonwalkNumber >= 0 ifFalse: [ 
+	aMoonwalkNumber >= 0 ifFalse: [
 		Error signal: 'Moonwalk number cant be a negative number.' ]
 ]
 
@@ -24,15 +24,9 @@ Moonwalk class >> createWith: aMoonwalkNumber [
 	^ self new initializeWith: aMoonwalkNumber
 ]
 
-{ #category : #effectApplying }
-Moonwalk >> applyMoonwalkIn: aBoard to: aSpaceship [ 
-	aBoard executeAMoonwalkTo: aSpaceship of: number 
-]
-
 { #category : #applying }
 Moonwalk >> applyTo: aBoard by: aSpaceship [
-	self applyMoonwalkIn: aBoard to: aSpaceship
-
+	aBoard executeAMoonwalkTo: aSpaceship of: number
 ]
 
 { #category : #initialization }

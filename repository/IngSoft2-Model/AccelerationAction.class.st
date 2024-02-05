@@ -3,14 +3,14 @@ I represent an action or play made by an acceleration card.
 "
 Class {
 	#name : #AccelerationAction,
-	#superclass : #Object,
+	#superclass : #Action,
 	#category : #'IngSoft2-Model'
 }
 
 { #category : #applying }
-AccelerationAction >> on: aGameInstance by: aSpaceship to: aTargetedSpaceship with: anAccelerationCard [
+AccelerationAction >> on: aZathuraGame by: aSpaceship to: aFleet with: anAccelerationCard [
 
-	aGameInstance
+	aZathuraGame
 		currentSpaceshipPlaysCard: anAccelerationCard
 		playedBy: aSpaceship
 ]
